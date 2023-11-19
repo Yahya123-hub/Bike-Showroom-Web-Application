@@ -1,0 +1,164 @@
+import React from "react";
+import * as Components from './SignupSigninComponents.jsx';
+import circleImage from './assets/imageedit_9_4143813496.jpg';
+import circleImage2 from './assets/imageedit_2_6513138259.jpg';
+import './styles.css';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import MDashboard from './Mechanic_Dashboard.jsx';
+import CDashboard from './Customer_Dashboard.jsx';
+import ADashboard from './Admin_Dashboard.jsx';
+import axios from 'axios';
+import {userSchema} from "./Validations/RegValidations.js"
+import Select from "react-select";
+import { useFormik } from "formik";
+
+
+
+function App() {
+
+
+    const createUser = async(event)=>{
+        event.preventDefault();
+        let formData ={
+            name: event.target[0].value,
+            email: event.target[1].value,
+            password: event.target[2].value,
+            role: event.target[3].value,
+        };
+        const IsValid= await userSchema.isValid(formData)
+        window.alert(IsValid)
+    };
+
+    const [signIn, toggle] = React.useState(true);
+    const [name, setName] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [semail, setsEmail] = React.useState('');
+    const [spassword, setsPassword] = React.useState('');
+    const [role, setRole] = React.useState(null); 
+    const options = [
+      { value: 'option1', label: 'Customer' },
+      { value: 'option2', label: 'Admin' },
+      { value: 'option3', label: 'Mechanic' },
+    ];
+    //const [showSignInSignUp, setShowSignInSignUp] = React.useState(true);
+    const navigate=useNavigate();
+
+    const handleSignUp = (e) => { 
+        e.preventDefault();
+        axios.post('http://localhost:3001/Users', {name,email,password,role:role.label})
+            .then(result => {
+                console.log(result);
+                window.alert('Account Created');
+            })
+            .catch(error => {
+                window.alert("Something went wrong:")
+                window.alert(error)})              
+    };
+
+    const handleSignIn = async () => {
+
+        try {
+          const response = await axios.post('http://localhost:3001/signin', {
+            email: semail,
+            password: spassword,
+          });
+          if (response.status === 200) {
+            const userRole = response.data.role;
+            console(userRole)
+            window.alert(`Login successful. User role: ${userRole}`);
+            if (userRole === 'Customer') {
+                navigate('/customer-dashboard');
+            } else if (userRole === 'Admin') {
+                navigate('/admin-dashboard');
+            } else if (userRole === 'Mechanic') {
+                navigate('/mechanic-dashboard');
+            }
+          } else {
+            window.alert('Invalid Credentials');
+          }
+        } catch (error) {
+          window.alert('Invalid Credentials', error);
+        }
+      };
+
+    const formik = useFormik({
+        initialValues: {
+        name: '',
+        email: '',
+        password: '',
+        role: null,
+        semail:'',
+        spassword:'',
+    }});
+        
+
+    return (
+        <div>
+                <Components.Container>
+                    <Components.SignUpContainer signinIn={signIn}>
+                        <Components.Form onSubmit={createUser}>
+                            <Components.Title>Create An Account</Components.Title>
+                            <Components.Input type='text' placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
+                            <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <Components.Input type='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <div style={{ position: 'relative', width: '380px',marginTop:'10px', marginBottom: '20px'  }}>
+                                <Select
+                                    value={role}
+                                    onChange={(selectedOption) => setRole(selectedOption)}
+                                    options={options}
+                                    placeholder="Role"
+                                    
+                                />
+                            </div>
+                            <Components.Button onClick={handleSignUp}>Sign Up</Components.Button>
+                        </Components.Form>
+                    </Components.SignUpContainer>
+
+                    <Components.SignInContainer signinIn={signIn}>
+                        <Components.Form>
+                            <Components.Title>Bike Showroom</Components.Title>
+                            <Components.Input type='email' placeholder='Email'  value={semail} onChange={(e) => setsEmail(e.target.value)} />
+                            <Components.Input type='password' placeholder='Password'  value={spassword} onChange={(e) => setsPassword(e.target.value)} />
+                            <Components.Anchor href='#'>Forgot your password?</Components.Anchor>
+                                <Components.Button onClick={handleSignIn}>Sign In</Components.Button>
+                        </Components.Form>
+                    </Components.SignInContainer>
+
+                    <Components.OverlayContainer signinIn={signIn}>
+                        <Components.Overlay signinIn={signIn}>
+                            <Components.LeftOverlayPanel signinIn={signIn}>
+                                <Components.BackgroundImage src={circleImage} alt="" />
+                                <Components.Title>Already Registered?</Components.Title>
+                                <Components.Paragraph>
+                                    Please login with your personal info
+                                </Components.Paragraph>
+                                <Components.GhostButton onClick={() => toggle(true)}>
+                                    Sign In
+                                </Components.GhostButton>
+                            </Components.LeftOverlayPanel>
+
+                            <Components.RightOverlayPanel signinIn={signIn}>
+                                <Components.BackgroundImage src={circleImage2} alt="" />
+                                <Components.Title>Get started with us,</Components.Title>
+                                <Components.Paragraph>
+                                    Register to start your journey with us
+                                </Components.Paragraph>
+                                <Components.GhostButton onClick={() => toggle(false)}>
+                                    Sign Up
+                                </Components.GhostButton>
+                            </Components.RightOverlayPanel>
+                        </Components.Overlay>
+                    </Components.OverlayContainer>
+                </Components.Container>
+
+            <Routes>
+                <Route path="/customer-dashboard" element={<CDashboard />} />
+                <Route path="/admin-dashboard" element={<ADashboard />} />
+                <Route path="/mechanic-dashboard" element={<MDashboard />} />
+            </Routes>
+        </div>
+    );
+}
+
+export default App;

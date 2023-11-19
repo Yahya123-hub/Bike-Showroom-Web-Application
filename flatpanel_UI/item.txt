@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+
+//const Product = ({ id, name, price, units, category, status, image }) => {
+
+const Product = () => {
+  const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+  const [productId, setProductId] = useState(id);
+  const [productName, setProductName] = useState(name);
+  const [productPrice, setProductPrice] = useState(price);
+  const [productUnits, setProductUnits] = useState(units);
+  const [productCategory, setProductCategory] = useState(category);
+  const [productStatus, setProductStatus] = useState(status);
+  const [productImage, setProductImage] = useState(image);
+
+  const handleAddToCart = () => {
+    // Update the cart state with the new product
+    //setCart([...cart, { id: productId, name: productName, price: productPrice, quantity }]);
+    //console.log(`Added ${productName} to the cart`);
+  };
+
+  const handleAddToWishlist = () => {
+    // Update the wishlist state with the new product
+    //setWishlist([...wishlist, { id: productId, name: productName, price: productPrice }]);
+    //console.log(`Added ${productName} to the wishlist`);
+  };
+
+  const handleBuyNow = () => {
+    // Implement the logic to initiate the buy now process
+    //console.log(`Buying ${productName} now`);
+  };
+
+  return (
+    <div className="product">
+      <img src={productImage} alt={productName} />
+      <div className="product-details">
+        <h2>{productName}</h2>
+        <p>ID: {productId}</p>
+        <p>Price: ${productPrice}</p>
+        <p>Units: {productUnits}</p>
+        <p>Category: {productCategory}</p>
+        <p>Status: {productStatus}</p>
+      </div>
+      <div className="product-buttons">
+        <label>
+          Quantity:
+          <input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
+        </label>
+        <button onClick={handleAddToCart}>Add to Cart</button>
+        <button onClick={handleAddToWishlist}>Add to Wishlist</button>
+        <button onClick={handleBuyNow}>Buy Now</button>
+      </div>
+    </div>
+  );
+};
+
+export default Product;
