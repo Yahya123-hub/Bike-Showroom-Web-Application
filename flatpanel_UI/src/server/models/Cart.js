@@ -3,6 +3,10 @@ import { Schema, model } from 'mongoose';
 const CartSchema = new Schema({
   BikeID: String,
   name: String,
+  updatedprice:{
+    type: Number,
+    default: 0
+  } ,
   price: Number ,
   stock: Number , //availablequantity
   orderedQuantity: Number ,

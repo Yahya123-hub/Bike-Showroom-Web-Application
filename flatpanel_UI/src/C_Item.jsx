@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import './C_styles.css';
 import styled from 'styled-components';
 import PropTypes from 'prop-types'; 
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 const RoundedButton = styled.button`
@@ -22,6 +25,8 @@ const RoundedButton = styled.button`
 
 const Item = ({id, name, price, units, category, image}) => {
 
+  const navigate=useNavigate();
+
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -40,6 +45,7 @@ const Item = ({id, name, price, units, category, image}) => {
           BikeID: id,
           name: name,
           price: price,
+          updatedprice: price,
           stock: units,
           orderedQuantity: 1
         })
@@ -90,6 +96,16 @@ const Item = ({id, name, price, units, category, image}) => {
   
 
   const handleBuyNow = () => {
+    axios.post('http://localhost:3001/Order', {
+      items: name,
+      grandtotal: price,
+    })
+    .then(response => {
+        console.log(response);
+        window.alert('Order Created');
+        navigate('/C_Orders')
+    })
+    .catch(error => window.alert('Error Creating Order:', error));
   };
 
   return (

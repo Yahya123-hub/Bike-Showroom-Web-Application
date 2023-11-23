@@ -42,9 +42,9 @@ const C_Shop = () => {
       case 'option1':
         return filteredBikes.sort((a, b) => a.name.localeCompare(b.name));
       case 'option2':
-        return filteredBikes.sort((a, b) => a.price - b.price);
+        return filteredBikes.sort((a, b) => b.price - a.price);
       case 'option3':
-        return filteredBikes.sort((a, b) => a.availableQuantity - b.availableQuantity);
+        return filteredBikes.sort((a, b) => b.availableQuantity - a.availableQuantity);
       case 'option4':
         return filteredBikes.sort((a, b) => a.category.localeCompare(b.category));
       default:

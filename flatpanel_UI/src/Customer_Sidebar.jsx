@@ -53,11 +53,6 @@ function Sidebar({openSidebarToggle, OpenSidebar} ) {
                     <MdPayments className='icon'/> Payment History
                 </Link>
             </li>
-            <li className='sidebar-list-item'>
-                <Link className='icon' to="/C_ForYou">
-                    <AiFillStar className='icon'/> For you
-                </Link>
-            </li>
 
             <li className='sidebar-list-item'>
             <Link className='icon' to="/C_Refund">
