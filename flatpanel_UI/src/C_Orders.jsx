@@ -114,20 +114,7 @@ const C_Orders = () => {
       name: "Actions",
       cell: row => (
         <div>
-          <button
-            style={{
-              borderRadius: '20px', 
-              border: '#000', 
-              padding: '5px 10px',
-              backgroundColor: '#d3d3d3',
-              
-            }}
-            onClick={(e) => handleDelete(row._id)}
-            disabled={row.status === 'Delivered'}
 
-          >
-            <span style={{ color: '#000' }}>Delete</span>
-          </button>
           <button
             style={{
               borderRadius: '20px', 

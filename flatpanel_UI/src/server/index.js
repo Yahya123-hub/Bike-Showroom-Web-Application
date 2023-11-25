@@ -11,6 +11,7 @@ import WishlistModel from './models/Wishlist.js';
 import CartModel from './models/Cart.js';
 import OrderModel from './models/Orders.js';
 import PaymentModel from './models/Payments.js';
+import FeedbackModel from './models/Feedback.js';
 
 
 
@@ -82,6 +83,12 @@ app.get('/GetOrders', (req, res) => {
 app.get('/GetCart', (req, res) => {
   CartModel.find()
     .then(Cart => res.json(Cart))
+    .catch(error => res.json(error));
+});
+
+app.get('/GetPaymentHistory', (req, res) => {
+  PaymentModel.find()
+    .then(Payment => res.json(Payment))
     .catch(error => res.json(error));
 });
 
@@ -184,6 +191,55 @@ app.post('/Mechanics', (req, res) => {
     .catch((error) => res.json(error));
 });
 
+app.post('/Feedback', (req, res) => {
+  FeedbackModel.create(req.body)
+    .then((Feedback) => res.json(Feedback))
+    .catch((error) => res.json(error));
+});
+
+app.get('/BikeCount', async (req, res) => {
+  try {
+    const bikeCount = await BikesModel.countDocuments(); 
+    res.json({ count: bikeCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/RefundsCount', async (req, res) => {
+  try {
+    const bikeCount = await PaymentModel.countDocuments({ refunded: true }); 
+    res.json({ count: bikeCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/WishlistCount', async (req, res) => {
+  try {
+    const bikeCount = await WishlistModel.countDocuments(); 
+    res.json({ count: bikeCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+app.get('/DeliveredOrdersCount', async (req, res) => {
+  try {
+    const deliveredOrdersCount = await OrderModel.countDocuments({ status: 'Delivered' });
+    res.json({ count: deliveredOrdersCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
 app.post('/Order', (req, res) => {
   OrderModel.create(req.body)
     .then((Order) => res.json(Order))
@@ -212,6 +268,33 @@ app.put('/ApproveMechanic/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+app.put('/Refund/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedpaymenthistory = await PaymentModel.findByIdAndUpdate(id, { refunded: true }, { new: true });
+    res.json(updatedpaymenthistory);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/PaymentHistory/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const paymenthistory = await PaymentModel.findById(id);
+    if (!paymenthistory) {
+      return res.status(404).json({ error: 'Payment history not found' });
+    }
+
+    res.json(paymenthistory);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 app.put('/Card/:id', async (req, res) => {
   try {
@@ -295,14 +378,6 @@ app.put('/UpdateCart', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
-
-//use the og price value from the cart to show on frontend
-//dont change in db until checkout
-//on checkout, update the cart db, calculate the grand total of cart 
-//temporarily disable the cart until order completion
-//make order using the grandtotal n other info
-//enable the cart back when order completed
-//ezzzzzzzzzzz
 
 
 app.put('/DecCart/:id', async (req, res) => {

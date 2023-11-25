@@ -4,8 +4,50 @@ import
  import 
  { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } 
  from 'recharts';
+ import { RiMotorbikeLine } from "react-icons/ri";
+ import { TbJewishStar } from "react-icons/tb";
+ import { MdBorderColor } from "react-icons/md";
+ import { RiRefundLine } from "react-icons/ri";
+ import React from 'react';
+ import axios from 'axios';
+
+
+
 
 function Home() {
+
+  const [bikeCount, setBikeCount] = React.useState(0);
+  const [wishlist, setWishlist] = React.useState(0);
+  const [deliveredorders, setDeliveredorders] = React.useState(0);
+  const [refunds, setRefunds] = React.useState(0);
+
+  React.useEffect(() => {
+      axios.get('http://localhost:3001/BikeCount')
+      .then(response => {
+        setBikeCount(response.data.count);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+      axios.get('http://localhost:3001/WishlistCount')
+      .then(response => {
+        setWishlist(response.data.count);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+      axios.get('http://localhost:3001/DeliveredOrdersCount')
+      .then(response => {
+        setDeliveredorders(response.data.count);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+      axios.get('http://localhost:3001/RefundsCount')
+      .then(response => {
+        setRefunds(response.data.count);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+
+  }, []);
 
     const data = [
         {
@@ -62,31 +104,31 @@ function Home() {
         <div className='main-cards'>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>PRODUCTS</h3>
-                    <BsFillArchiveFill className='card_icon'/>
+                    <h3>BIKES</h3>
+                    <RiMotorbikeLine className='card_icon'/>
                 </div>
-                <h1>300</h1>
+                <h1>{bikeCount}</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>CATEGORIES</h3>
-                    <BsFillGrid3X3GapFill className='card_icon'/>
+                    <h3>WISHLIST</h3>
+                    <TbJewishStar className='card_icon'/>
                 </div>
-                <h1>12</h1>
+                <h1>{wishlist}</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>CUSTOMERS</h3>
-                    <BsPeopleFill className='card_icon'/>
+                    <h3>DELIVERED ORDERS</h3>
+                    <MdBorderColor className='card_icon'/>
                 </div>
-                <h1>33</h1>
+                <h1>{deliveredorders}</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>ALERTS</h3>
-                    <BsFillBellFill className='card_icon'/>
+                    <h3>REFUNDS</h3>
+                    <RiRefundLine className='card_icon'/>
                 </div>
-                <h1>42</h1>
+                <h1>{refunds}</h1>
             </div>
         </div>
 

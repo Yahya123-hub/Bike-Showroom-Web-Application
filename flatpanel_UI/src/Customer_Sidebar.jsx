@@ -6,7 +6,7 @@ import {AiFillShop,AiFillStar} from 'react-icons/ai';
 import {FaShoppingCart,FaClipboardList} from 'react-icons/fa'
 import {MdPayments} from 'react-icons/md'
 import {BiSupport} from 'react-icons/bi'
-import {BsFillInfoCircleFill} from 'react-icons/bs'
+import { BiSolidExit } from 'react-icons/bi';
 import { TbJewishStarFilled } from 'react-icons/tb';
 
 
@@ -67,22 +67,24 @@ function Sidebar({openSidebarToggle, OpenSidebar} ) {
             </li>
 
             <li className='sidebar-list-item'>
+            <Link className='icon' to="/C_Support">
+                    <BiSupport className='icon'/> Intructions
+            </Link>
+            </li>
+
+            <li className='sidebar-list-item'>
                 <Link className='icon' to="/C_Credentials">
                     <RiLockPasswordFill className='icon'/> Reset Password
                 </Link>
             </li>
 
             <li className='sidebar-list-item'>
-            <Link className='icon' to="/C_Support">
-                    <BiSupport className='icon'/> Support
+            <Link className='icon' to="/logout">
+                    <BiSolidExit className='icon'/> Log Out
             </Link>
             </li>
 
-            <li className='sidebar-list-item'>
-            <Link className='icon' to="/C_CustomerInfo">
-                <BsFillInfoCircleFill className='icon'/> Customer Info 
-            </Link>
-            </li>
+
         </ul>
     </aside>
   )

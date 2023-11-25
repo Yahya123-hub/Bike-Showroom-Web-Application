@@ -56,7 +56,7 @@ const C_Shop = () => {
 
   return (
     <div>
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute' }}>
         <Select
           value={options.find(option => option.value === sort)}
           onChange={(selectedOption) => setSort(selectedOption.value)}
@@ -66,15 +66,15 @@ const C_Shop = () => {
             container: (provided) => ({
               ...provided,
               position: 'relative',
-              top: '30px',
-              left: '630px',
+              top: '22px',
+              left: '850px',
               zIndex: 9999,
             }),
           }}
         />
       </div>
 
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute' }}>
         <Components.Input
           type='text'
           placeholder='Search'
@@ -82,7 +82,7 @@ const C_Shop = () => {
           onChange={handleSearch}
           style={{
             position: 'relative',
-            top: '-15px',
+            top: '15px',
             left: '10px',
             borderRadius: '5px',
             padding: '11px',
@@ -90,17 +90,21 @@ const C_Shop = () => {
         />
       </div>
 
-      {sortedAndFilteredBikes.map(bike => (
-        <Item
-          key={bike._id}
-          id={bike._id}
-          name={bike.name}
-          price={bike.price}
-          units={bike.availableQuantity}
-          category={bike.category}
-          image={bike.Image}
-        />
-      ))}
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '80px'  }}>
+        {sortedAndFilteredBikes.map(bike => (
+          <Item
+            key={bike._id}
+            id={bike._id}
+            name={bike.name}
+            price={bike.price}
+            units={bike.availableQuantity}
+            category={bike.category}
+            image={bike.Image}
+          />
+        ))}
+      </div>
+
+
     </div>
   );
 };
