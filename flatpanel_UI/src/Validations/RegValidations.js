@@ -5,7 +5,8 @@ export const userSchema = yup.object().shape({
     .string()
     .required("Name is required")
     .max(50, "Name must be at most 50 characters")
-    .matches(/^[a-zA-Z\s'-]+$/, "Invalid characters in the name"),
+    .matches(/^[a-zA-Z\s'-]+$/, "Invalid characters in the name")
+    .matches(/\S/, "Name cannot consist of only spaces"),
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
     .string()

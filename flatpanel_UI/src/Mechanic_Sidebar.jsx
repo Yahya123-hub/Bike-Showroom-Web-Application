@@ -43,7 +43,7 @@ function Sidebar({openSidebarToggle, OpenSidebar} ) {
 
             <li className='sidebar-list-item'>
             <Link className='icon' to="/M_Reports">
-                    <BiSolidReport className='icon'/> Reports
+                    <BiSolidReport className='icon'/> Report
             </Link>
             </li>
             <li className='sidebar-list-item'>

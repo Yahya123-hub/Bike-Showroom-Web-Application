@@ -7,13 +7,16 @@ import * as yup from "yup";
 const M_Apply = () => {
   const validationSchema = yup.object({
     name: yup.string()
-    .required('Name is required')
-    .max(50, 'Name must be at most 50 characters'),
+      .required('Name is required')
+      .max(50, 'Name must be at most 50 characters')
+      .matches(/^[a-zA-Z\s'-]+$/, 'Invalid characters in the name')
+      .matches(/\S/, 'Name cannot consist of only spaces'),
     contact: yup.string()
-    .matches(/^0[0-9]{10}$/, 'Invalid contact number. Must start with 0 and be 11 digits.')
-    .required('Contact Number is required'),
+      .matches(/^0[0-9]{10}$/, 'Invalid contact number. Must start with 0 and be 11 digits.')
+      .required('Contact Number is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
   });
+  
 
   const handleM_Apply = (e, values, actions) => {
     e.preventDefault();

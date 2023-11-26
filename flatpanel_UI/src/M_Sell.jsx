@@ -6,10 +6,19 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 const validationSchema = yup.object({
-  name: yup.string().required('Name is required'),
-  price: yup.number().required('Price is required').positive('Price must be a positive number').moreThan(0, 'Price must be greater than zero'),
-  availableQuantity: yup.number().required('Available Quantity is required').positive('Quantity must be a positive number').moreThan(0, 'Quantity must be greater than zero'),
+  name: yup.string()
+    .required('Name is required')
+    .matches(/\S/, 'Name cannot consist of only spaces'),
+  price: yup.number()
+    .required('Price is required')
+    .positive('Price must be a positive number')
+    .moreThan(0, 'Price must be greater than zero'),
+  availableQuantity: yup.number()
+    .required('Available Quantity is required')
+    .positive('Quantity must be a positive number')
+    .moreThan(0, 'Quantity must be greater than zero'),
 });
+
 
 const M_Sell = () => {
   const options = [
