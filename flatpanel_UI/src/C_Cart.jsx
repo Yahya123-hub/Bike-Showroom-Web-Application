@@ -81,6 +81,31 @@ const C_Cart = () => {
   };
 
   const Checkout = () => {
+    
+    const updateStock = (cart) => {
+      cart.forEach(item => {
+        axios.get(`http://localhost:3001/GetStock/${item.BikeID}`)
+          .then(stockResponse => {
+            const currentStock = stockResponse.data.quantity;
+  
+            const updatedStock = currentStock - item.orderedQuantity;
+  
+            axios.put(`http://localhost:3001/UpdateStock/${item.BikeID}`, {
+              quantity: updatedStock
+            })
+              .then(updateResponse => {
+                console.log(updateResponse);
+              })
+              .catch(updateError => {
+                console.error('Error updating stock in database:', updateError);
+              });
+          })
+          .catch(stockError => {
+            console.error('Error fetching stock from database:', stockError);
+          });
+      });
+    };
+  
     axios.get('http://localhost:3001/GetCart')
       .then(response => {
         setCart(response.data);
@@ -99,19 +124,22 @@ const C_Cart = () => {
         console.log(response);
         window.alert('Order Created, Cart Will be Cleared');
   
+        updateStock(cart);
+  
         setCart([]);
         setRecords([]);
   
         axios.delete('http://localhost:3001/ClearCart')
-          .then(response => {
-            console.log(response);
+          .then(deleteResponse => {
+            console.log(deleteResponse);
           })
-          .catch(error => {
-            console.error('Error clearing cart from database:', error);
+          .catch(deleteError => {
+            console.error('Error clearing cart from database:', deleteError);
           });
       })
       .catch(error => window.alert('Error Creating Order:', error));
   };
+  
   
   
 

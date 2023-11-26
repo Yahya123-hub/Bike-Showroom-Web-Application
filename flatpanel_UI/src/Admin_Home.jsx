@@ -4,8 +4,50 @@ import
  import 
  { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } 
  from 'recharts';
+ import React from 'react';
+ import axios from 'axios';
+ import { GiMechanicGarage } from "react-icons/gi";
+ import { AiOutlineStock } from "react-icons/ai";
+ import { RiPassValidFill } from "react-icons/ri";
+
+
+
+
 
 function Home() {
+
+  const [mechanicsCount, setMechanicCount] = React.useState(0);
+  const [stock, setStock] = React.useState(0);
+  const [users, setUsers] = React.useState(0);
+  const [approvedmechanics, setApprovedmechanics] = React.useState(0);
+
+  React.useEffect(() => {
+      axios.get('http://localhost:3001/MechanicsCount')
+      .then(response => {
+        setMechanicCount(response.data.count);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+      axios.get('http://localhost:3001/BikeCount')
+      .then(response => {
+        setStock(response.data.count);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+      axios.get('http://localhost:3001/Users')
+      .then(response => {
+        setUsers(response.data.count);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+      axios.get('http://localhost:3001/Approvedmechanics')
+      .then(response => {
+        setApprovedmechanics(response.data.count);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+
+  }, []);
 
     const data = [
         {
@@ -62,31 +104,31 @@ function Home() {
         <div className='main-cards'>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>PRODUCTS</h3>
-                    <BsFillArchiveFill className='card_icon'/>
+                    <h3>MECHANICS</h3>
+                    <GiMechanicGarage className='card_icon'/>
                 </div>
-                <h1>300</h1>
+                <h1>{mechanicsCount}</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>CATEGORIES</h3>
-                    <BsFillGrid3X3GapFill className='card_icon'/>
+                    <h3>STOCK</h3>
+                    <AiOutlineStock className='card_icon'/>
                 </div>
-                <h1>12</h1>
+                <h1>{stock}</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>CUSTOMERS</h3>
+                    <h3>USERS</h3>
                     <BsPeopleFill className='card_icon'/>
                 </div>
-                <h1>33</h1>
+                <h1>{users}</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
-                    <h3>ALERTS</h3>
-                    <BsFillBellFill className='card_icon'/>
+                    <h3>APPROVED MECHANICS</h3>
+                    <RiPassValidFill className='card_icon'/>
                 </div>
-                <h1>42</h1>
+                <h1>{approvedmechanics}</h1>
             </div>
         </div>
 

@@ -217,6 +217,90 @@ app.get('/RefundsCount', async (req, res) => {
   }
 });
 
+app.get('/CustCount', async (req, res) => {
+  try {
+    const Count = await UsersModel.countDocuments({ role: 'Customer' }); 
+    res.json({ count: Count });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/Users', async (req, res) => {
+  try {
+    const Count = await UsersModel.countDocuments(); 
+    res.json({ count: Count });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/MechanicsCount', async (req, res) => {
+  try {
+    const Count = await UsersModel.countDocuments({ role: 'Mechanic' }); 
+    res.json({ count: Count });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/Approvedmechanics', async (req, res) => {
+  try {
+    const Count = await MechanicsModel.countDocuments({ isApproved: true }); 
+    res.json({ count: Count });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/GetStock/:id', async (req, res) => {
+  const itemId = req.params.id;
+
+  try {
+    const bike = await BikesModel.findById(itemId);
+    if (bike) {
+      res.json({ quantity: bike.availableQuantity });
+    } else {
+      res.status(404).json({ error: 'Bike not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/UpdateStock/:id', async (req, res) => {
+  const itemId = req.params.id;
+  const { quantity } = req.body;
+
+  try {
+    const bike = await BikesModel.findById(itemId);
+    if (bike) {
+      bike.availableQuantity = quantity;
+      await bike.save();
+      res.json({ success: true });
+    } else {
+      res.status(404).json({ error: 'Bike not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+app.get('/ApplicationsCount', async (req, res) => {
+  try {
+    const Count = await MechanicsModel.countDocuments(); 
+    res.json({ count: Count });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.get('/WishlistCount', async (req, res) => {
   try {
     const bikeCount = await WishlistModel.countDocuments(); 

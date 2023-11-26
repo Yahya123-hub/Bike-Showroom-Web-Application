@@ -94,19 +94,34 @@ const Item = ({id, name, price, units, category, image}) => {
       .catch(error => window.alert('Error fetching data:', error));
   };
   
-
   const handleBuyNow = () => {
     axios.post('http://localhost:3001/Order', {
       items: name,
       grandtotal: price,
     })
     .then(response => {
-        console.log(response);
-        window.alert('Order Created');
-        navigate('/C_Orders')
+      console.log(response);
+      window.alert('Order Created');
+  
+      if (units > 0) {
+        axios.put(`http://localhost:3001/UpdateStock/${id}`, {
+          quantity: units - 1,
+        })
+        .then(stockUpdateResponse => {
+          console.log(stockUpdateResponse);
+          navigate('/C_Orders');
+        })
+        .catch(stockUpdateError => {
+          window.alert('Error updating stock:', stockUpdateError);
+        });
+      } else {
+        window.alert('Item is out of stock.');
+      }
     })
     .catch(error => window.alert('Error Creating Order:', error));
   };
+  
+  
 
   return (
     <div className="product-container">
@@ -116,13 +131,13 @@ const Item = ({id, name, price, units, category, image}) => {
         <p>Price: Rs.{price}</p>
         <p>Units: {units}</p>
         <p>Category: {category}</p>
-        <p>Status: {units>0 ? 'In Stock' : 'Out of Stock'}</p>
+        <p>Status: <span className={units > 0 ? 'in-stock' : 'out-of-stock'}>{units > 0 ? 'In Stock' : 'Out of Stock'}</span></p>
         <p>ID: {id}</p>
       </div>
       <div className="product-buttons">
-        <RoundedButton onClick={handleAddToCart}>Cart</RoundedButton>
-        <RoundedButton onClick={handleAddToWishlist}>Wishlist</RoundedButton>
-        <RoundedButton onClick={handleBuyNow}>Buy Now</RoundedButton>
+        <RoundedButton onClick={handleAddToCart} disabled={units <= 0}>Cart</RoundedButton>
+        <RoundedButton onClick={handleAddToWishlist} disabled={units <= 0}>Wishlist</RoundedButton>
+        <RoundedButton onClick={handleBuyNow} disabled={units <= 0}>Buy Now</RoundedButton>
       </div>
     </div>
   );
