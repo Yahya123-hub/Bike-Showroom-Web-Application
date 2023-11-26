@@ -5,6 +5,8 @@ import
 import { Link } from 'react-router-dom';
 import { RiMotorbikeFill, RiLockPasswordFill  } from 'react-icons/ri';
 import { BiSolidExit } from 'react-icons/bi';
+import { MdOutlineRateReview } from "react-icons/md";
+
 
 function Sidebar({openSidebarToggle, OpenSidebar} ) {
   return (
@@ -27,17 +29,14 @@ function Sidebar({openSidebarToggle, OpenSidebar} ) {
                 <BsInfoCircleFill className='icon' /> Mechanic Info
             </Link>
             </li>
-            <li className='sidebar-list-item'>
-                <Link className='icon' to="/A_Credentials">
-                    <RiLockPasswordFill className='icon'/> Reset Password
-                </Link>
-            </li>
-            <li className='sidebar-list-item'>
-            <Link className='icon' to="/A_Logout">
-                    <BiSolidExit className='icon'/> Log Out
-            </Link>
 
+            <li className='sidebar-list-item'>
+            <Link className='icon' to="/A_Reviews">
+                <MdOutlineRateReview className='icon' /> Reviews
+            </Link>
             </li>
+
+
 
         </ul>
     </aside>

@@ -46,17 +46,8 @@ function Sidebar({openSidebarToggle, OpenSidebar} ) {
                     <BiSolidReport className='icon'/> Report
             </Link>
             </li>
-            <li className='sidebar-list-item'>
-            <Link className='icon' to="/M_Credentials">
-                <RiLockPasswordFill className='icon' /> Reset Password
-            </Link>
-            </li>
 
-            <li className='sidebar-list-item'>
-            <Link className='icon' to="/logout">
-                    <BiSolidExit className='icon'/> Log Out
-            </Link>
-            </li>
+
         </ul>
 
     </aside>

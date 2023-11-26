@@ -15,9 +15,4 @@ export const userSchema = yup.object().shape({
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[0-9]).{6,}$/,
       "Password must include at least one letter, one special character, and one number"
     ),
-  role: yup
-    .string()
-    .required("Role is required")
-    .oneOf(["admin", "customer", "mechanic"], "Invalid role")
-    .lowercase("Role must be lowercase"),
 });

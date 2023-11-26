@@ -47,7 +47,8 @@ const C_Feedback = () => {
         .then(result => {
           console.log(result);
           window.alert('Thank you for your Feedback');
-          formik.resetForm();
+          window.location.reload();
+          //formik.resetForm();
         })
         .catch(error => {
           window.alert('Something went wrong:');

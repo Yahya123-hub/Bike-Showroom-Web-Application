@@ -42,6 +42,7 @@ const A_AddUsers = () => {
                 console.log(result);
                 console.log(values.role.value)
                 window.alert('Account Created');
+                window.location.reload();
               })
               .catch(error => {
                 window.alert('Something went wrong:');

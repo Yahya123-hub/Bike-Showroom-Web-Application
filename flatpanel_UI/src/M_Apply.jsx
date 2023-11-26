@@ -24,6 +24,8 @@ const M_Apply = () => {
       .then(result => {
         console.log(result);
         window.alert('Application Filled');
+        window.location.reload();
+
         // one mechanic can only fill application once
       })
       .catch(error => {

@@ -72,18 +72,6 @@ function Sidebar({openSidebarToggle, OpenSidebar} ) {
             </Link>
             </li>
 
-            <li className='sidebar-list-item'>
-                <Link className='icon' to="/C_Credentials">
-                    <RiLockPasswordFill className='icon'/> Reset Password
-                </Link>
-            </li>
-
-            <li className='sidebar-list-item'>
-            <Link className='icon' to="/logout">
-                    <BiSolidExit className='icon'/> Log Out
-            </Link>
-            </li>
-
 
         </ul>
     </aside>

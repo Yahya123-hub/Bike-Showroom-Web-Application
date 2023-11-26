@@ -15,7 +15,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 
-
 function App() {
 
       
@@ -52,6 +51,7 @@ function App() {
                   console.log(result);
                   console.log(values.role.value)
                   window.alert('Account Created');
+                  //window.location.reload();
                 })
                 .catch(error => {
                   window.alert('Something went wrong:');
@@ -88,16 +88,13 @@ function App() {
               .then(response => {
                 const userRole = response.data.role;
                 console.log(userRole);
-                window.alert(`Login successful. User role: ${userRole}`);
+                //window.alert(`Login successful. User role: ${userRole}`);
                 if (userRole === 'Customer') {
-                  //navigate('/customer-dashboard');
-                  //window.alert("customer")
+                  window.open('/customer-dashboard', '_blank');
                 } else if (userRole === 'Admin') {
-                  //navigate('/admin-dashboard');
-                  //window.alert("admin")
+                  window.open('/admin-dashboard', '_blank');
                 } else if (userRole === 'Mechanic') {
-                  //navigate('/mechanic-dashboard');
-                  //window.alert("mechanic")
+                  window.open('/mechanic-dashboard', '_blank');
                 }
               })
               .catch(error => {
@@ -254,11 +251,11 @@ function App() {
                     </Components.OverlayContainer>
                 </Components.Container>
 
-            <Routes>
-                <Route path="/customer-dashboard" element={<CDashboard />} />
-                <Route path="/admin-dashboard" element={<ADashboard />} />
-                <Route path="/mechanic-dashboard" element={<MDashboard />} />
-            </Routes>
+                <Routes>
+                  <Route path="/customer-dashboard/*" element={<CDashboard />} />
+                  <Route path="/admin-dashboard/*" element={<ADashboard />} />
+                  <Route path="/mechanic-dashboard/*" element={<MDashboard />} />
+                </Routes>
         </div>
     );
 }

@@ -7,6 +7,7 @@ import A_Users from './A_Users';
 import A_Mi from './A_Mi';
 import A_Credentials from './A_Credentials';
 import A_AddUsers from './A_AddUsers';
+import A_Reviews from './A_Reviews';
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/A_Users" element={<A_Users />} />
           <Route path="/A_Mi" element={<A_Mi />} />
           <Route path="/A_Credentials" element={<A_Credentials />} />
+          <Route path="/A_Reviews" element={<A_Reviews />} />
           <Route path="/A_AddUser" element={<A_AddUsers />} />
         </Routes>
       </div>

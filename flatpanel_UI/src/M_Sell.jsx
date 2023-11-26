@@ -53,11 +53,11 @@ const M_Sell = () => {
         .then(result => {
           console.log(result);
           window.alert('Bike Listed');
-          window.location.reload();
+          //window.location.reload();
 
-          //formik.resetForm();
-          //setImage(null);
-          //setImagePreview(null);
+          formik.resetForm();
+          setImage(null);
+          setImagePreview(null);
         })
         .catch(error => {
           window.alert('Something went wrong:');
@@ -124,6 +124,7 @@ const M_Sell = () => {
             value={options.find(option => option.value === formik.values.category)}
             onChange={(selectedOption) => formik.setFieldValue('category', selectedOption)}
             onBlur={formik.handleBlur}
+            name="category"
             options={options}
             placeholder="Category"
             isSearchable={false}

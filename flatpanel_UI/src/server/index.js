@@ -74,6 +74,12 @@ app.get('/GetWishlist', (req, res) => {
     .catch(error => res.json(error));
 });
 
+app.get('/GetFeedback', (req, res) => {
+  FeedbackModel.find()
+    .then(Feedback => res.json(Feedback))
+    .catch(error => res.json(error));
+});
+
 app.get('/GetOrders', (req, res) => {
   OrderModel.find()
     .then(Order => res.json(Order))
