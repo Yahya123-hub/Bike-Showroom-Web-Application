@@ -20,12 +20,16 @@ function App() {
 
       
     const [signIn, toggle] = React.useState(true);
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showRPassword, setShowRPassword] = React.useState(false);
+
     const options = [
       { value: 'Customer', label: 'Customer' },
       { value: 'Admin', label: 'Admin' },
       { value: 'Mechanic', label: 'Mechanic' },
     ];
     const navigate=useNavigate();
+    
     const handleSignUp = (e, values, actions) => {
       e.preventDefault();
     
@@ -38,16 +42,15 @@ function App() {
               actions.setErrors({ email: 'Email is already in use' });
               actions.setSubmitting(false);
             } else {
-              // Proceed with registration, as the email is available
               axios.post('http://localhost:3001/Users', {
                 name: values.name,
                 email: values.email,
                 password: values.password,
-                role: values.role.label,
+                role: values.role,
               })
                 .then(result => {
                   console.log(result);
-                  console.log(values.role.label)
+                  console.log(values.role.value)
                   window.alert('Account Created');
                 })
                 .catch(error => {
@@ -73,7 +76,9 @@ function App() {
     
       
       
-      const handleSignIn = async ( values, actions) => {
+      const handleSignIn = async ( e,values, actions) => {
+        e.preventDefault();
+
         loginFormik.validateForm(values).then((errors) => {
           if (Object.keys(errors).length === 0) {
             axios.post('http://localhost:3001/signin', {
@@ -86,13 +91,13 @@ function App() {
                 window.alert(`Login successful. User role: ${userRole}`);
                 if (userRole === 'Customer') {
                   //navigate('/customer-dashboard');
-                  window.alert("customer")
+                  //window.alert("customer")
                 } else if (userRole === 'Admin') {
                   //navigate('/admin-dashboard');
-                  window.alert("admin")
+                  //window.alert("admin")
                 } else if (userRole === 'Mechanic') {
                   //navigate('/mechanic-dashboard');
-                  window.alert("mechanic")
+                  //window.alert("mechanic")
                 }
               })
               .catch(error => {
@@ -131,7 +136,8 @@ function App() {
         validateOnChange: true, 
       });
       
-      console.log(registrationFormik)
+      console.log("r", registrationFormik)
+      console.log("l", loginFormik)
 
       return (
         <div>
@@ -147,14 +153,14 @@ function App() {
                             {registrationFormik.touched.email && registrationFormik.errors.email && (
                                 <p className="error">{registrationFormik.errors.email}</p>
                             )}
-                            <Components.Input type='password' placeholder='Password' value={registrationFormik.values.password} onChange={registrationFormik.handleChange} onBlur={registrationFormik.handleBlur} name="password" />
+                            <Components.Input type={showRPassword ? 'text' : 'password'} placeholder='Password' value={registrationFormik.values.password} onChange={registrationFormik.handleChange} onBlur={registrationFormik.handleBlur} name="password" />
                             {registrationFormik.touched.password && registrationFormik.errors.password && (
                                 <p className="error">{registrationFormik.errors.password}</p>
                             )}
                             <div style={{ position: 'relative', width: '380px',marginTop:'10px', marginBottom: '20px'  }}>
                             <Select
                                   value={options.find(option => option.value === registrationFormik.values.role)}
-                                  onChange={(selectedOption) => registrationFormik.setFieldValue("role", selectedOption.value)}
+                                  onChange={(selectedOption) => registrationFormik.setFieldValue("role", selectedOption)}
                                   onBlur={registrationFormik.handleBlur}
                                   name="role"
                                   options={options}
@@ -162,13 +168,27 @@ function App() {
                                   isSearchable={false}
                               />
                             </div>
+
+                            <div style={{ marginTop: '-5px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                <label style={{ marginLeft: '5px' }}>
+                                  Show Password
+                                  <input
+                                    type="checkbox"
+                                    checked={showRPassword}
+                                    onChange={() => setShowRPassword(!showRPassword)}
+                                  />
+                                </label>
+                            </div>
                         
+                            <div style={{ marginTop: '15px'}}>
+                            
                             <Components.Button
                               onClick={(e) => handleSignUp(e, registrationFormik.values, registrationFormik)}
                               disabled={Object.keys(registrationFormik.errors).length > 0 || registrationFormik.isSubmitting}
                             >
                               Sign Up
                             </Components.Button>
+                            </div>
                           </Components.Form>
                     </Components.SignUpContainer>
 
@@ -179,17 +199,30 @@ function App() {
                             {loginFormik.touched.semail && loginFormik.errors.semail && (
                                 <p className="error2">{loginFormik.errors.semail}</p>
                             )}
-                            <Components.Input type='password' placeholder='Password'  value={loginFormik.values.spassword} onChange={loginFormik.handleChange} onBlur={loginFormik.handleBlur}  name="spassword" />
+                            <Components.Input type={showPassword ? 'text' : 'password'} placeholder='Password'  value={loginFormik.values.spassword} onChange={loginFormik.handleChange} onBlur={loginFormik.handleBlur}  name="spassword" />
                             {loginFormik.touched.spassword && loginFormik.errors.spassword && (
                                 <p className="error2">{loginFormik.errors.spassword}</p>
                             )}
-                            <Components.Anchor href='#'>Forgot your password?</Components.Anchor>
+
+                            <div style={{ marginTop: '2px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                <label style={{ marginLeft: '5px' }}>
+                                  Show Password
+                                  <input
+                                    type="checkbox"
+                                    checked={showPassword}
+                                    onChange={() => setShowPassword(!showPassword)}
+                                  />
+                                </label>
+                            </div>
+                            
+                            <div style={{ marginTop: '15px' }}>
                             <Components.Button
                               onClick={(e) => handleSignIn(e, loginFormik.values, loginFormik)}
                               disabled={Object.keys(loginFormik.errors).length > 0 || loginFormik.isSubmitting}
                             >
                               Sign In
                             </Components.Button>
+                            </div>
 
                         </Components.Form>
                     </Components.SignInContainer>

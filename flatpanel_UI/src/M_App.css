@@ -5,6 +5,19 @@ body {
     color: #9e9ea4;
     font-family: 'Montserrat', sans-serif;
   }
+
+  .error{
+    color: red;
+    margin-top: 1px; 
+    font-size: 12px;
+  
+  }
+  
+  .error2{
+    color: red;
+    margin-top: 1px; 
+    font-size: 12px;
+  }
   
   .icon {
     vertical-align: middle;

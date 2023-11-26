@@ -8,6 +8,13 @@
   align-items: center;
 }
 
+.error{
+  color: red;
+  margin-top: 1px; 
+  font-size: 12px;
+
+}
+
 .product-image {
   width: 100px; 
   height: 100px; 
