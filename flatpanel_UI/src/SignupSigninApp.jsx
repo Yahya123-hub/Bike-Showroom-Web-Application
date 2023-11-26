@@ -21,47 +21,61 @@ function App() {
       
     const [signIn, toggle] = React.useState(true);
     const options = [
-      { value: 'option1', label: 'Customer' },
-      { value: 'option2', label: 'Admin' },
-      { value: 'option3', label: 'Mechanic' },
+      { value: 'Customer', label: 'Customer' },
+      { value: 'Admin', label: 'Admin' },
+      { value: 'Mechanic', label: 'Mechanic' },
     ];
     const navigate=useNavigate();
+    const handleSignUp = (e, values, actions) => {
+      e.preventDefault();
+    
+      registrationFormik.validateForm(values).then((errors) => {
+        if (Object.keys(errors).length === 0) {
 
-    const handleSignUp = (values, actions) => {
-        // Validation using Yup
-        registrationFormik.validateForm(values).then((errors) => {
-          if (Object.keys(errors).length === 0) {
-            // No validation errors, proceed with form submission
-            axios.post('http://localhost:3001/Users', {
-              name: values.name,
-              email: values.email,
-              password: values.password,
-              role: values.role.label,
-            })
-              .then(result => {
-                console.log(result);
-                window.alert('Account Created');
+          axios.get(`http://localhost:3001/CheckUsers?email=${values.email}`)
+          .then(response => {
+            if (response.data.message === 'Email is already in use') {
+              actions.setErrors({ email: 'Email is already in use' });
+              actions.setSubmitting(false);
+            } else {
+              // Proceed with registration, as the email is available
+              axios.post('http://localhost:3001/Users', {
+                name: values.name,
+                email: values.email,
+                password: values.password,
+                role: values.role.label,
               })
-              .catch(error => {
-                window.alert("Something went wrong:")
-                window.alert(error);
-              })
-              .finally(() => {
-                actions.setSubmitting(false);
-              });
-          } else {
-            // Validation errors found, update formik errors
-            actions.setErrors(errors);
+                .then(result => {
+                  console.log(result);
+                  console.log(values.role.label)
+                  window.alert('Account Created');
+                })
+                .catch(error => {
+                  window.alert('Something went wrong:');
+                  window.alert(error);
+                })
+                .finally(() => {
+                  actions.setSubmitting(false);
+                });
+            }
+          })
+          .catch(error => {
+            window.alert('Error checking email availability:', error);
             actions.setSubmitting(false);
-          }
-        });
-      };
+          });
+
+        } else {
+          actions.setErrors(errors);
+          actions.setSubmitting(false);
+        }
+      });
+    };
+    
       
-      const handleSignIn = async (values, actions) => {
-        // Validation using Yup
+      
+      const handleSignIn = async ( values, actions) => {
         loginFormik.validateForm(values).then((errors) => {
           if (Object.keys(errors).length === 0) {
-            // No validation errors, proceed with form submission
             axios.post('http://localhost:3001/signin', {
               email: values.semail,
               password: values.spassword,
@@ -71,11 +85,14 @@ function App() {
                 console.log(userRole);
                 window.alert(`Login successful. User role: ${userRole}`);
                 if (userRole === 'Customer') {
-                  navigate('/customer-dashboard');
+                  //navigate('/customer-dashboard');
+                  window.alert("customer")
                 } else if (userRole === 'Admin') {
-                  navigate('/admin-dashboard');
+                  //navigate('/admin-dashboard');
+                  window.alert("admin")
                 } else if (userRole === 'Mechanic') {
-                  navigate('/mechanic-dashboard');
+                  //navigate('/mechanic-dashboard');
+                  window.alert("mechanic")
                 }
               })
               .catch(error => {
@@ -97,11 +114,11 @@ function App() {
           name: '',
           email: '',
           password: '',
-          role: null,
+          role: options[0].value, 
         },
         validationSchema: userSchema, 
         onSubmit: handleSignUp,
-        validateOnChange: true, // Enable onChange validation
+        validateOnChange: true, 
       });
       
       const loginFormik = useFormik({
@@ -111,16 +128,16 @@ function App() {
         },
         validationSchema: userLoginSchema, 
         onSubmit: handleSignIn,
-        validateOnChange: true, // Enable onChange validation
+        validateOnChange: true, 
       });
       
-      console.log(loginFormik)
+      console.log(registrationFormik)
 
       return (
         <div>
                 <Components.Container>
                     <Components.SignUpContainer signinIn={signIn}>
-                        <Components.Form onSubmit={handleSignUp}>
+                        <Components.Form >
                             <Components.Title>Create An Account</Components.Title>
                             <Components.Input type='text' placeholder='Name' value={registrationFormik.values.name} onChange={registrationFormik.handleChange} onBlur={registrationFormik.handleBlur} name="name" />
                             {registrationFormik.touched.name && registrationFormik.errors.name && (
@@ -135,21 +152,24 @@ function App() {
                                 <p className="error">{registrationFormik.errors.password}</p>
                             )}
                             <div style={{ position: 'relative', width: '380px',marginTop:'10px', marginBottom: '20px'  }}>
-                                <Select
-                                    value={registrationFormik.values.role} 
-                                    onChange={registrationFormik.handleChange} 
-                                    onBlur={registrationFormik.handleBlur}
-                                    name="role"
-                                    options={options}
-                                    placeholder="Role"
-                                    isSearchable={false} //assign a default value 
-                                />
+                            <Select
+                                  value={options.find(option => option.value === registrationFormik.values.role)}
+                                  onChange={(selectedOption) => registrationFormik.setFieldValue("role", selectedOption.value)}
+                                  onBlur={registrationFormik.handleBlur}
+                                  name="role"
+                                  options={options}
+                                  placeholder="Role"
+                                  isSearchable={false}
+                              />
                             </div>
-                            
-
-                            
-                            <Components.Button onClick={handleSignUp} >Sign Up</Components.Button>
-                        </Components.Form>
+                        
+                            <Components.Button
+                              onClick={(e) => handleSignUp(e, registrationFormik.values, registrationFormik)}
+                              disabled={Object.keys(registrationFormik.errors).length > 0 || registrationFormik.isSubmitting}
+                            >
+                              Sign Up
+                            </Components.Button>
+                          </Components.Form>
                     </Components.SignUpContainer>
 
                     <Components.SignInContainer signinIn={signIn}>
@@ -164,7 +184,13 @@ function App() {
                                 <p className="error2">{loginFormik.errors.spassword}</p>
                             )}
                             <Components.Anchor href='#'>Forgot your password?</Components.Anchor>
-                                <Components.Button onClick={handleSignIn}>Sign In</Components.Button>
+                            <Components.Button
+                              onClick={(e) => handleSignIn(e, loginFormik.values, loginFormik)}
+                              disabled={Object.keys(loginFormik.errors).length > 0 || loginFormik.isSubmitting}
+                            >
+                              Sign In
+                            </Components.Button>
+
                         </Components.Form>
                     </Components.SignInContainer>
 

@@ -481,6 +481,27 @@ app.put('/DecCart/:id', async (req, res) => {
   }
 });
 
+app.get('/CheckUsers', async (req, res) => {
+  const email = req.query.email;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email parameter is required' });
+  }
+
+  try {
+    const user = await UsersModel.findOne({ email });
+
+    if (user) {
+      return res.status(200).json({ message: 'Email is already in use' });
+    } else {
+      return res.status(200).json({ message: 'Email is available' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 
 app.post('/signin', async (req, res) => {
   try {
