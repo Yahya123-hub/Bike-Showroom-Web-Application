@@ -22,9 +22,6 @@ Authentication: [Specify if using JWT, Firebase, etc.]
 
 Clone the repository
 
-git clone https://github.com/your-username/repo-name.git
-cd repo-name
-
 Install dependencies
 npm install
 Run the development server
