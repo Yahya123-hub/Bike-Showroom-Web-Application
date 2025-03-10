@@ -5,10 +5,15 @@ Effortlessly discover and purchase bikes with this sleek showroom web applicatio
 🚀 Features
 
 CRUD Operations for Products: Add, update, delete, and manage products with ease.
+
 Dashboard with Analytics: Get real-time product display with counters and insights.
+
 Product Listing Page: Browse available bikes with detailed information.
+
 Seller Menu: Allows sellers to add and manage their products efficiently.
+
 Admin Menu: Enables administrators to add and manage users.
+
 Reports & Analytics: Generate reports to track inventory, sales, and other key metrics.
 
 🛠️ Tech Stack
