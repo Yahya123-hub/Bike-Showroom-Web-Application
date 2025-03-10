@@ -18,15 +18,14 @@ Reports & Analytics: Generate reports to track inventory, sales, and other key m
 
 🛠️ Tech Stack
 
-Frontend: [Specify technologies, e.g., React, Vue, Next.js]
-Backend: [Specify backend framework, e.g., Node.js, Express, Django]
-Database: [Specify database, e.g., MongoDB, PostgreSQL, MySQL]
-Authentication: [Specify if using JWT, Firebase, etc.]
+Frontend: [React, Vite]
+Backend: [Node.js, Express]
+Database: [MongoDB]
+Authentication: [JWT]
 
 📦 Installation & Setup
 
 Clone the repository
-
 Install dependencies
 npm install
 Run the development server
